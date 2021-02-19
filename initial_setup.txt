@@ -1,0 +1,7 @@
+# install ruby on the system
+gem install rails -v 6.1.0 # install rails
+gem install bundler # install bundler, ruby package manager
+bundle exec rails new . --no-deps --skip-test --webpack=react --skip-coffee --skip-sprocket --skip-action-cable --database=postgresql --api -f # create new rails app
+# update config/database.yml and docker-compose.yml to be in sync
+docker-compose build
+docker-compose up

@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  workshop-api:
+    build: .
+    volumes:
+      - type: bind
+        source: .
+        target: /home/workshop
+        consistency: delegated
+      - /home/workshop/storage/
+      - /home/workshop/build/
+      - /home/workshop/tmp/
+      - /home/workshop/log/
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      DATABASE_HOST: postgres
+      RAILS_ENV: development
+    depends_on: ["postgres"]
+  postgres:
+    image: postgres:9.5
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+
+volumes:
+  pgdata:
