@@ -1,0 +1,9 @@
+# ssh into workshop-api container
+docker ps # get id of the container
+docker exec -it <id> bash # ssh into the container
+
+# create Book model and BooksController controller
+#  1. create and test #index route
+#  2. create and test #show route
+#  3. create and test #create route
+#  4. create and test #destroy route
