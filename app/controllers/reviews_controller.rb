@@ -5,6 +5,7 @@ class ReviewsController < ApplicationController
     review_params = {
       text: params[:text],
       score: params[:score],
+      reviewed_by: params[:reviewed_by],
       book_id: params[:book_id]
     }
     review = Review.new(review_params)

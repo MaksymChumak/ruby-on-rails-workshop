@@ -30,3 +30,4 @@ sudo chown 1000 <migration_file_path>
 sudo chgrp 1000 <migration_file_path>
 
 ----------------------------------------------------------------------------------------------
+rails g migration add_reviewed_by_to_reviews reviewed_by:string
