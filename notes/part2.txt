@@ -18,6 +18,15 @@ sudo chown 1000 <migration_file_path>
 sudo chgrp 1000 <migration_file_path>
 ----------------------------------------------------------------------------------------------
 
-------------------------------- Database Column Addition -------------------------------------
+------------------------------- Database Association Creation --------------------------------
+# container
+rails g migration create_reviews text:string score:integer book:references
+# remove null: false restriction
+rake db:migrate:status
+rake db:migrate # observe changes in schema.rb
+
+# host computer
+sudo chown 1000 <migration_file_path>
+sudo chgrp 1000 <migration_file_path>
 
 ----------------------------------------------------------------------------------------------

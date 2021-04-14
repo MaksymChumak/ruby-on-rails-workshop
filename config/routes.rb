@@ -3,4 +3,5 @@ Rails.application.routes.draw do
 
   # https://guides.rubyonrails.org/routing.html#resource-routing-the-rails-default
   resources :books, only: [:index, :show, :create, :destroy]
+  resources :reviews, only: [:create]
 end

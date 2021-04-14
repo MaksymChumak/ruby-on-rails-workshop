@@ -18,7 +18,12 @@ class BooksController < ApplicationController
     book = Book.find_by(id: id)
 
     if book
-      response = { "status" => "success", "data" => { "book" => book } }
+      response = {
+        "status" => "success",
+        "data" => {
+          "book" => book.attributes.merge("reviews" => book.reviews)
+        }
+      }
       render json: response, status: :ok
     else
       response = { "status" => "error", "message" => "book with id #{id} NOT FOUND"}
