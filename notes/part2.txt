@@ -30,4 +30,14 @@ sudo chown 1000 <migration_file_path>
 sudo chgrp 1000 <migration_file_path>
 
 ----------------------------------------------------------------------------------------------
-rails g migration add_reviewed_by_to_reviews reviewed_by:string
+
+------------------------------- Add Database Column ------------------------------------------
+# container
+rails g migration create_reviews text:string score:integer book:references
+rake db:migrate:status
+rake db:migrate # observe changes in schema.rb
+
+# host computer
+sudo chown 1000 <migration_file_path>
+sudo chgrp 1000 <migration_file_path>
+----------------------------------------------------------------------------------------------
