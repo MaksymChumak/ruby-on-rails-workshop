@@ -2,10 +2,11 @@ class BooksController < ApplicationController
   # response follows Jsend specification: https://github.com/omniti-labs/jsend
 
   def index
+    books = Book.all
     response = {
       "status" => "success",
       "data" => {
-        "books" => Book::BOOKS
+        "books" => books
       },
     }
 
@@ -13,11 +14,11 @@ class BooksController < ApplicationController
   end
 
   def show
-    id = params[:id].to_i
-    book = Book::BOOKS.find { |b| b[:id] == id }
+    id = params[:id]
+    book = Book.find_by(id: id)
 
     if book
-      response = { "status" => "success", "data" => book }
+      response = { "status" => "success", "data" => { "book" => book } }
       render json: response, status: :ok
     else
       response = { "status" => "error", "message" => "book with id #{id} NOT FOUND"}
@@ -26,20 +27,15 @@ class BooksController < ApplicationController
   end
 
   def create
-    title = params[:title]
-    price = params[:price]
-    author = params[:author]
-    if title && price && author
-      Book::LAST_ID += 1
+    book_params = {
+      title: params[:title],
+      author: params[:author],
+      price: params[:price],
+    }
 
-      book = {
-        id: Book::LAST_ID,
-        title: title,
-        author: author,
-        price: price,
-      }
-
-      Book::BOOKS.push(book)
+    book = Book.new(book_params)
+    if book.valid?
+      book.save!
       response = { "status" => "success", "data" => book }
       render json: response, status: :ok
     else
@@ -54,14 +50,15 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    id = params[:id].to_i
+    id = params[:id]
+    book = Book.find_by(id: id)
 
-    if Book::BOOKS.reject! { |b| b[:id] == id }
+    if book && book.destroy
       response = { "status" => "success", "data" => nil }
       render json: response, status: :ok
     else
-      response = { "status" => "error", "message" => "book with id #{id} NOT FOUND"}
-      render json: response, status: :not_found
+      response = { "status" => "error", "message" => "couldn't DELETE book record with id #{id}"}
+      render json: response, status: :internal_server_eror
     end
   end
 end

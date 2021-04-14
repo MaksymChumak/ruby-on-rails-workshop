@@ -1,0 +1,23 @@
+------------------------------- Database Table Creation -------------------------------------
+# container
+docker ps
+docker exec -it <container_id> bash
+rails g migration create_books title:string author:string price:integer
+
+rake db:migrate:status
+rake db:migrate # observe changes in schema.rb
+rake db:migrate:status
+rake db:rollback step=1
+rake db:migrate:status
+rake db:migrate
+rake db:migrate:status
+rake db:seed
+
+# host computer
+sudo chown 1000 <migration_file_path>
+sudo chgrp 1000 <migration_file_path>
+----------------------------------------------------------------------------------------------
+
+------------------------------- Database Column Addition -------------------------------------
+
+----------------------------------------------------------------------------------------------
