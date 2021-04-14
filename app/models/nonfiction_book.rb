@@ -1,0 +1,2 @@
+class NonfictionBook < Book
+end

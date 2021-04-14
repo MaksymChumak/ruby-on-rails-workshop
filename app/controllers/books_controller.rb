@@ -31,29 +31,6 @@ class BooksController < ApplicationController
     end
   end
 
-  def create
-    book_params = {
-      title: params[:title],
-      author: params[:author],
-      price: params[:price],
-    }
-
-    book = Book.new(book_params)
-    if book.valid?
-      book.save!
-      response = { "status" => "success", "data" => book }
-      render json: response, status: :ok
-    else
-      response = {
-        "status" => "fail",
-        "data" => {
-          "message" => "invalid request body"
-          }
-        }
-      render json: response, status: :bad_request
-    end
-  end
-
   def destroy
     id = params[:id]
     book = Book.find_by(id: id)
