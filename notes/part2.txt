@@ -33,9 +33,21 @@ sudo chgrp 1000 <migration_file_path>
 
 ------------------------------- Add Database Column ------------------------------------------
 # container
-rails g migration create_reviews text:string score:integer book:references
+rails g migration add_reviewed_by_to_reviews reviewed_by:string
 rake db:migrate:status
 rake db:migrate # observe changes in schema.rb
+
+# host computer
+sudo chown 1000 <migration_file_path>
+sudo chgrp 1000 <migration_file_path>
+----------------------------------------------------------------------------------------------
+
+------------------------------- Single Table Inheritance (STI) -------------------------------
+# container
+rails g migration add_type_to_books type:string
+rake db:migrate:status
+rake db:migrate # observe changes in schema.rb
+# reset database
 
 # host computer
 sudo chown 1000 <migration_file_path>

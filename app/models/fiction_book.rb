@@ -1,0 +1,2 @@
+class FictionBook < Book
+end
