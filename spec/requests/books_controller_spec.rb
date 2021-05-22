@@ -3,17 +3,25 @@
 require "rails_helper"
 
 RSpec.describe BooksController, type: :request do
-  describe "#show" do
-    let!(:book) { create(:book) }
-    let!(:review) { create(:review, book: book) }
-    let(:book_id) { book.id }
+  describe "#show" do # define block for testing #show BooksController actions
 
+    # define state needed to create the successful request
+    let!(:book) { create(:book) } # creates a book record and saves it to the database before each test case
+    let!(:review) { create(:review, book: book) } # crates a review record and saves it to the database
+    let(:book_id) { book.id } # define book_id variable to overwrite in the future test cases
+
+    # define the request we are making to excercise the endpoint
     subject(:request) { get book_url(book_id) }
+
+    # make a request before each test block
     before(:each) do
       request
     end
 
+    # define test block for successful cases
     context "success" do
+
+      # when there is a review associated with the book
       context "with review" do
         it "has status code :success" do
           expect(response).to have_http_status(:success)
@@ -45,6 +53,7 @@ RSpec.describe BooksController, type: :request do
         end
       end # context "with review"
 
+      # when there is no reviews associated with the book
       context "without review" do
         let!(:review) { nil }
 
@@ -73,8 +82,11 @@ RSpec.describe BooksController, type: :request do
       end # context "without review"
     end # context "success"
 
+    # define test block for error cases
     context "error" do
       context "when book is not found" do
+
+        # make book id that is passed to request invalid
         let(:book_id) { "invalid_id" }
 
         it "responds with an error message" do
