@@ -226,4 +226,47 @@ RSpec.describe BooksController, type: :request do
       end # context "when price is not provided"
     end # context "error"
   end # describe "#create"
+
+  describe "#index" do
+    let!(:book) { create(:book) }
+    let!(:book1) { create(:book) }
+
+    subject(:request) { get books_url }
+
+    before(:each) do
+      request
+    end
+
+    context "success" do
+      it "has status code :success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "responds with JSON" do
+        expect(response.content_type).to eql("application/json; charset=utf-8")
+      end
+
+      it "returns a Jsend body" do
+        expect(JSON.parse(response.body)).to match(
+          "status" => "success",
+          "data" => {
+            "books" => [
+              hash_including(
+                "id" => book.id,
+                "title" => book.title,
+                "author" => book.author,
+                "price" => book.price,
+              ),
+              hash_including(
+                "id" => book1.id,
+                "title" => book1.title,
+                "author" => book1.author,
+                "price" => book1.price,
+              )
+            ]
+          }
+        )
+      end
+    end # context "success"
+  end # describe "#index"
 end
