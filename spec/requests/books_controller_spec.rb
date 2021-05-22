@@ -141,4 +141,89 @@ RSpec.describe BooksController, type: :request do
       end # context "when book is not found"
     end # context "error"
   end # describe "#destroy"
+
+  describe "#create" do
+    let(:title) { "cat book" }
+    let(:author) { "cat_author" }
+    let(:price) { 100 }
+
+    let(:params) do
+      {
+        title: title,
+        author: author,
+        price: price,
+      }
+    end
+
+    subject(:request) { post books_url(params) }
+
+    shared_examples "invalid request" do
+      it "responds with status code :bad_request (400)" do
+        request
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it "returns a Jsend body" do
+        request
+        expect(JSON.parse(response.body)).to match(
+          "status" => "fail",
+          "data" => {
+            "message" => "invalid request body"
+          }
+        )
+      end
+
+      it "does not create a record in the database" do
+        expect { request }.to_not change(Book, :count)
+      end
+    end # shared_examples "invalid request"
+
+    context "success" do
+      it "has status code :success" do
+        request
+        expect(response).to have_http_status(:success)
+      end
+
+      it "responds with JSON" do
+        request
+        expect(response.content_type).to eql("application/json; charset=utf-8")
+      end
+
+      it "returns a Jsend body" do
+        request
+        expect(JSON.parse(response.body)).to match(
+          "status" => "success",
+          "data" => hash_including(
+            "title" => title,
+            "author" => author,
+            "price" => price,
+          )
+        )
+      end
+
+      it "creates a book" do
+        expect { request }.to change(Book, :count).by(1)
+      end
+    end # context "success"
+
+    context "error" do
+      context "when title is not provided" do
+        let(:title) { nil }
+
+        it_behaves_like "invalid request"
+      end # context "when title is not provided"
+
+      context "when author is not provided" do
+        let(:author) { nil }
+
+        it_behaves_like "invalid request"
+      end # context "when author is not provided"
+
+      context "when price is not provided" do
+        let(:price) { nil }
+
+        it_behaves_like "invalid request"
+      end # context "when price is not provided"
+    end # context "error"
+  end # describe "#create"
 end
