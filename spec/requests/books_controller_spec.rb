@@ -97,24 +97,28 @@ RSpec.describe BooksController, type: :request do
     let(:book_id) { book.id }
 
     subject(:request) { delete book_url(book_id) }
-    before(:each) do
-      request
-    end
 
     context "success" do
       it "has status code :success" do
+        request
         expect(response).to have_http_status(:success)
       end
 
       it "responds with JSON" do
+        request
         expect(response.content_type).to eql("application/json; charset=utf-8")
       end
 
       it "returns a Jsend body" do
+        request
         expect(JSON.parse(response.body)).to match(
           "status" => "success",
           "data" => nil,
         )
+      end
+
+      it "deletes the book" do
+        expect { request }.to change(Book, :count).by(-1)
       end
     end # context "success"
 
@@ -123,6 +127,7 @@ RSpec.describe BooksController, type: :request do
         let(:book_id) { "invalid_id" }
 
         it "responds with an error message" do
+          request
           expect(JSON.parse(response.body)).to eq({
             "status" => "error",
             "message" => "couldn't DELETE book record with id #{book_id}"
@@ -130,6 +135,7 @@ RSpec.describe BooksController, type: :request do
         end
 
         it "responds with status code :internal_server_error (500)" do
+          request
           expect(response).to have_http_status(:internal_server_error)
         end
       end # context "when book is not found"
