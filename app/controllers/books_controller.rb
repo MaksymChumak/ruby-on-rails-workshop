@@ -63,7 +63,7 @@ class BooksController < ApplicationController
       render json: response, status: :ok
     else
       response = { "status" => "error", "message" => "couldn't DELETE book record with id #{id}"}
-      render json: response, status: :internal_server_eror
+      render json: response, status: :internal_server_error
     end
   end
 end
