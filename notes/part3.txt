@@ -1,0 +1,14 @@
+# add test gems to Gemfile and run docker-compose build
+# instructions:
+  https://github.com/rspec/rspec-rails
+  https://github.com/thoughtbot/factory_bot_rails
+  https://stackoverflow.com/questions/48091582/ruby-gem-uninitialized-constant-factorybot
+  https://github.com/faker-ruby/faker
+  https://github.com/DatabaseCleaner/database_cleaner
+# ssh into the container
+# rails generate rspec:install
+# sudo chown -R 1000 ./spec
+# create model specs
+# write factories
+# configure test output format to :docker
+# run tests with RAILS_ENV=test bundle exec rspec
